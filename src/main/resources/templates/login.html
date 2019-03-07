@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Welcome Security with Spring Boot!</title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../static/login.css" th:href="@{/login.css}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <form th:action="@{/login}" method="post" class="form-signin">
+            <h2 class="form-signin-heading">Please sign in</h2>
+
+            <label for="username" class="sr-only">Username</label>
+            <input type="text" id="username" class="form-control" placeholder="Username" name="username" />
+
+            <label for="password" class="sr-only">Password</label>
+            <input type="password" id="password" class="form-control" placeholder="Password" name="password" />
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        </form>
+    </div> <!-- /container -->
+</body>
+</html>

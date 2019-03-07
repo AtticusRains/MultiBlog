@@ -12,7 +12,7 @@ public class UserInfo implements Serializable {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private int id;
 
     @Size(min = 3, max = 15)
     @Column(unique = true, name = "username")
@@ -40,11 +40,11 @@ public class UserInfo implements Serializable {
         return serialVersionUID;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

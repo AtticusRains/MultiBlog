@@ -6,7 +6,7 @@ import java.util.List;
 public interface UserDAO {
     UserInfo getActiveUser(String username);
     List<UserInfo> findAll();
-    void save();
+    void save(UserInfo user);
     boolean userExists(String username);
 
 }
