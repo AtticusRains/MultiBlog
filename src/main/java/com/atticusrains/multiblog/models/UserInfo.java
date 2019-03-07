@@ -31,10 +31,14 @@ public class UserInfo implements Serializable {
     private String lastName;
 
     @Column(name = "enabled")
-    private boolean enabled;
+    private short enabled;
 
     @Column(name = "role")
     private String role;
+
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "user_id")
+    private Blog blog;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -89,10 +93,12 @@ public class UserInfo implements Serializable {
     }
 
     public boolean isEnabled() {
-        return enabled;
+        if (enabled == 1)
+            return true;
+        return false;
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(short enabled) {
         this.enabled = enabled;
     }
 
@@ -102,5 +108,13 @@ public class UserInfo implements Serializable {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Blog getBlog() {
+        return blog;
+    }
+
+    public void setBlog(Blog blog) {
+        this.blog = blog;
     }
 }

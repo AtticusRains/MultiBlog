@@ -42,11 +42,16 @@ public class IndexController {
         return "login";
     }
 
-    @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String processSignupForm(@ModelAttribute("user") @Valid UserInfo newUser, BindingResult bindingResult, Model model){
-
+    @RequestMapping(value = "/signup", method = RequestMethod.GET)
+    public String displaySignupForm(Model model){
+        model.addAttribute("user", new UserInfo());
         String confirmPassword = "";
-        model.addAttribute(confirmPassword, "confirmPassword");
+        model.addAttribute("confirmPassword", confirmPassword);
+        return "signup";
+    }
+
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    public String processSignupForm(@ModelAttribute("user") @Valid UserInfo newUser, @ModelAttribute("confirmPassword") String confirmPassword,BindingResult bindingResult, Model model){
 
         if(userDAO.userExists(newUser.getUsername())){
             bindingResult.addError(new FieldError("user","username", "Username is in use"));
@@ -57,7 +62,7 @@ public class IndexController {
             return "signup";
         }
 
-        newUser.setEnabled(true);
+        newUser.setEnabled((short)1);
         newUser.setRole("ROLE_USER");
         userDAO.save(newUser);
         return "redirect:";

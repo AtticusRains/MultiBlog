@@ -12,6 +12,6 @@ public interface BlogDAO {
     Blog getByTitle(String title);
     boolean blogExists(String title);
     List<Blog> findAll();
-    void save();
+    void save(Blog blog);
 
 }

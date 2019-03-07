@@ -1,5 +1,6 @@
 package com.atticusrains.multiblog.data;
 
+import com.atticusrains.multiblog.models.Blog;
 import com.atticusrains.multiblog.models.UserInfo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,15 +16,17 @@ import java.util.List;
 @Transactional
 public class UserDAOImpl implements UserDAO {
 
+    BlogDAO blogDAO;
+
     @PersistenceContext
-    private EntityManager entityManager;
+    private EntityManager userEntityManager;
 
     @Override
     public UserInfo getActiveUser(String username) {
         UserInfo activeUser = new UserInfo();
         short enabled = 1;
 
-        List<?> list = entityManager.createQuery("SELECT u FROM UserInfo u WHERE userName=? and enabled=?")
+        List<?> list = userEntityManager.createQuery("SELECT u FROM UserInfo u WHERE userName=? and enabled=?")
                 .setParameter(1, username).setParameter(2, enabled).getResultList();
 
         if(!list.isEmpty())
@@ -34,18 +37,23 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<UserInfo> findAll() {
-        return entityManager.createQuery("FROM UserInfo").getResultList();
+        return userEntityManager.createQuery("FROM UserInfo").getResultList();
     }
 
     @Override
     public void save(UserInfo user) {
         user.setPassword(encoder().encode(user.getPassword()));
-        entityManager.persist(user);
+        Blog blog = new Blog();
+        blog.setTitle(user.getUsername());
+        blog.setUserId(user.getId());
+        user.setBlog(blog);
+        userEntityManager.persist(user);
+        //blogDAO.save(blog);
     }
 
     @Override
     public boolean userExists(String username) {
-        List<?> list = entityManager.createQuery("SELECT u FROM UserInfo u WHERE userName=?")
+        List<?> list = userEntityManager.createQuery("SELECT u FROM UserInfo u WHERE userName=?")
                 .setParameter(1, username).getResultList();
         if(list.isEmpty()){
             return false;

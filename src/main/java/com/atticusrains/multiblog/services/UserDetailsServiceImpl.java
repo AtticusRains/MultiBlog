@@ -18,10 +18,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserDAO userDAO;
 
     @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        UserInfo activeUserInfo = userDAO.getActiveUser(userName);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserInfo activeUserInfo = userDAO.getActiveUser(username);
         GrantedAuthority authority = new SimpleGrantedAuthority(activeUserInfo.getRole());
-        UserDetails userDetails = (UserDetails)new User(activeUserInfo.getUsername(), activeUserInfo.getPassword(), Arrays.asList(authority));
+        UserDetails userDetails = new User(activeUserInfo.getUsername(),
+                activeUserInfo.getPassword(), Arrays.asList(authority));
 
         return userDetails;
     }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping(value = "/b")
 public class BlogController {
 
     @Autowired
@@ -19,12 +20,13 @@ public class BlogController {
     PostDAO postDAO;
 
     @RequestMapping(value = "/{blogTitle}")
-    public String displayBlog(@PathVariable(value = "blogTitle") String blogTitle, Model model){
+    public String displayBlog(@PathVariable String blogTitle, Model model){
         if(blogDAO.blogExists(blogTitle)){
             model.addAttribute("blog", blogDAO.getByTitle(blogTitle));
-            return "blogView";
+          //  return "blogView";
+            return "signup";
         }
-        return "404";
+        return "index";
     }
 
     @RequestMapping(value = "/{blogTitle}/{postTitle}")
