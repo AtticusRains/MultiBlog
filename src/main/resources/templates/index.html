@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8"/>
     <title>MultiBlog Home</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
 </head>
 <body>
     <nav>
@@ -14,18 +14,18 @@
             <li><a href="/login">Login</a></li>
             <li><a href="/signup">Sign up</a></li>
             <li><a href="/index">Home</a></li>
+            <li><a href="/newpost">New Post</a></li>
         </ul>
     </nav>
-
+    <p th:unless="${posts} and ${posts.size()}">no posts :(</p>
     <div th:each="post : ${posts}">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title" th:text="${post.title}"></h5>
                 <p class="card-text" th:text="${post.body}"></p>
-                <a th:href="@{/${post.blog.title}}" th:text="by ${post.blog.title}"></a>
+                <!-- <a th:href="@{/${post.blog.title}}" th:text="by ${post.blog.title}"></a th:href="@{/${post.blog.title}}"> -->
             </div>
         </div>
     </div>
-
 </body>
 </html>

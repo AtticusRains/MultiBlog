@@ -3,8 +3,10 @@ package com.atticusrains.multiblog.controllers;
 import com.atticusrains.multiblog.data.BlogDAO;
 import com.atticusrains.multiblog.data.PostDAO;
 import com.atticusrains.multiblog.data.UserDAO;
+import com.atticusrains.multiblog.models.Post;
 import com.atticusrains.multiblog.models.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class IndexController {
@@ -28,7 +32,9 @@ public class IndexController {
     BlogDAO blogDAO;
 
     @RequestMapping(value = "/")
-    public String index(){
+    public String index(Model model){
+        List<Post> posts = postDAO.findAll();
+        model.addAttribute("posts", posts);
         return "index";
     }
 
@@ -55,9 +61,9 @@ public class IndexController {
 
         if(userDAO.userExists(newUser.getUsername())){
             bindingResult.addError(new FieldError("user","username", "Username is in use"));
-        }// else if (!newUser.getPassword().equals(newUser.getPasswordConfirm())){
-       //     bindingResult.addError(new FieldError("user", "password", "Passwords do not match"));
-       // }
+        } else if (!newUser.getPassword().equals(confirmPassword)){
+            bindingResult.addError(new FieldError("user", "password", "Passwords do not match"));
+        }
         if(bindingResult.hasErrors()){
             return "signup";
         }
@@ -66,6 +72,26 @@ public class IndexController {
         newUser.setRole("ROLE_USER");
         userDAO.save(newUser);
         return "redirect:";
+    }
+
+    @RequestMapping(value = "/newpost", method = RequestMethod.GET)
+    public String displayNewPostForm(Model model){
+        model.addAttribute("post", new Post());
+        return "newpost";
+    }
+
+    @RequestMapping(value = "/newpost", method = RequestMethod.POST)
+    public String processNewPostForm(@ModelAttribute("post") @Valid Post post, Model model, Authentication authentication){
+
+        if(authentication == null){
+            return "login";
+        }
+
+        UserInfo user = userDAO.getActiveUser(authentication.getName());
+        post.setUserId(user.getId());
+        post.setBlog(user.getBlog());
+        postDAO.save(post);
+        return "/b/" + user.getUsername() + "/" + post.getTitle();
     }
 
     @RequestMapping(value = "/403")

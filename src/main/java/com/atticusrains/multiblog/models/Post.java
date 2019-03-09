@@ -25,7 +25,7 @@ public class Post {
 
     private String timestamp;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id")
     private List<Comment> comments = new ArrayList<>();
 

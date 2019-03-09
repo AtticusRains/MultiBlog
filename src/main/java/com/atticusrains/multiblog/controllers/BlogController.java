@@ -22,11 +22,10 @@ public class BlogController {
     @RequestMapping(value = "/{blogTitle}")
     public String displayBlog(@PathVariable String blogTitle, Model model){
         if(blogDAO.blogExists(blogTitle)){
-            model.addAttribute("blog", blogDAO.getByTitle(blogTitle));
-          //  return "blogView";
-            return "signup";
+            model.addAttribute("posts", blogDAO.getByTitle(blogTitle).getPosts());
+            return "blogview";
         }
-        return "index";
+        return "404";
     }
 
     @RequestMapping(value = "/{blogTitle}/{postTitle}")

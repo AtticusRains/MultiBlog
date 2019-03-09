@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org/">
+<head>
+    <meta charset="UTF-8"/>
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/signup">Sign up</a></li>
+            <li><a href="/index">Home</a></li>
+            <li><a href="/newpost">New Post</a></li>
+        </ul>
+    </nav>
+
+    <form th:object="${post}" th:action="@{/newpost}" method="post" class="form-group">
+        <div class="form-group">
+            <label th:for="tite">Title:</label>
+            <input type="text"  th:field="*{title}" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label th:for="body">Body:</label>
+            <textarea th:field="*{body}" class="form-control" rows="3"></textarea>
+        </div>
+        <input type="submit" class="btn btn-primary btn-block" value="submit"/>
+    </form>
+
+</body>
+</html>

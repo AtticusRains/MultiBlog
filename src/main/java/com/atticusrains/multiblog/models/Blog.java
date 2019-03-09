@@ -16,7 +16,7 @@ public class Blog {
 
     private String title;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "blog_id")
     private List<Post> posts;
 
