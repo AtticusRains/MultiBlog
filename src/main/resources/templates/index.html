@@ -21,9 +21,9 @@
     <div th:each="post : ${posts}">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title" th:text="${post.title}"></h5>
-                <p class="card-text" th:text="${post.body}"></p>
-                <!-- <a th:href="@{/${post.blog.title}}" th:text="by ${post.blog.title}"></a th:href="@{/${post.blog.title}}"> -->
+                <a th:href="@{'/b/' + ${post.blog.title} + '/' + ${post.urlFriendlyTitle}}"><h5 class="card-title" th:text="${post.title}"></h5></a>
+                <p class="card-text" th:text="${post.bodyExcerpt}"></p>
+                <footer class="blockquote-footer" th:text="${post.blog.title} + ' at ' + ${post.timestamp}"></footer>
             </div>
         </div>
     </div>

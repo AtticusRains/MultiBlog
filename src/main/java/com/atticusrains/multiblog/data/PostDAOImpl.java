@@ -25,22 +25,22 @@ public class PostDAOImpl implements  PostDAO {
 
     @Override
     public List<Post> findAllByUser(UserInfo user) {
-        return entityManager.createQuery("SELECT u FROM Post WHERE userId=?").setParameter(1, user.getId()).getResultList();
+        return entityManager.createQuery("SELECT post FROM Post WHERE userId=?").setParameter(1, user.getId()).getResultList();
     }
 
     @Override
     public List<Post> findAllByBlog(Blog blog) {
-        return entityManager.createQuery("SELECT u FROM Post WHERE blogId=?").setParameter(1, blog.getId()).getResultList();
+        return entityManager.createQuery("SELECT post FROM Post WHERE blogId=?").setParameter(1, blog.getId()).getResultList();
     }
 
     @Override
     public Post findByTitle(String title, int blogId) {
-        return (Post)entityManager.createQuery("SELECT u FROM Post WHERE blogId=? and title=?").setParameter(1, blogId).setParameter(2, title).getSingleResult();
+        return (Post)entityManager.createQuery("SELECT post FROM Post as post left join post.blog as blog WHERE post.urlFriendlyTitle=? and blog.id=?").setParameter(2, blogId).setParameter(1, title).getSingleResult();
     }
 
     @Override
     public boolean postExists(String title, int blogId){
-        List<Post> resultList = entityManager.createQuery("SELECT u FROM Post WHERE blogId=? and title=?").setParameter(1, blogId).setParameter(2, title).getResultList();
+        List<Post> resultList = entityManager.createQuery("SELECT post FROM Post as post left join post.blog as blog WHERE post.urlFriendlyTitle=? and blog.id=?").setParameter(2, blogId).setParameter(1, title).getResultList();
         if(resultList.isEmpty()){
             return false;
         }

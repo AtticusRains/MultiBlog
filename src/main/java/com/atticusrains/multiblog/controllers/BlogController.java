@@ -33,7 +33,7 @@ public class BlogController {
         Blog blog = blogDAO.getByTitle(blogTitle);
         if(blogDAO.blogExists(blogTitle) && postDAO.postExists(postTitle, blog.getId())){
             model.addAttribute("post", postDAO.findByTitle(postTitle, blog.getId()));
-            return "postView";
+            return "postview";
         }
         return "404";
     }

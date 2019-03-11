@@ -90,8 +90,12 @@ public class IndexController {
         UserInfo user = userDAO.getActiveUser(authentication.getName());
         post.setUserId(user.getId());
         post.setBlog(user.getBlog());
+        if(post.getBody().length() > 255){
+            post.setBodyExcerpt(post.getBody().substring(0,250).concat("..."));
+        } else { post.setBodyExcerpt(post.getBody());}
+        post.setUrlFriendlyTitle(post.cleanString(post.getTitle()));
         postDAO.save(post);
-        return "/b/" + user.getUsername() + "/" + post.getTitle();
+        return "redirect:/b/" + user.getUsername() + "/" + post.getUrlFriendlyTitle();
     }
 
     @RequestMapping(value = "/403")

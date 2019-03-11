@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org/">
 <head>
-    <meta charset="UTF-8"/>
     <title>MultiBlog Home</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
 </head>
     <body>
         <nav>
@@ -22,9 +21,9 @@
         <div th:each="post : ${posts}">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${post.title}"></h5>
-                    <p class="card-text" th:text="${post.body}"></p>
-                    <!-- <a th:href="@{/${post.blog.title}}" th:text="by ${post.blog.title}"></a th:href="@{/${post.blog.title}}"> -->
+                    <a th:href="@{'/b/' + ${post.blog.title} + '/' + ${post.urlFriendlyTitle}}"><h5 class="card-title" th:text="${post.title}"></h5></a>
+                    <p class="card-text" th:text="${post.bodyExcerpt}"></p>
+                    <footer class="blockquote-footer" th:text="${post.blog.title} + ' at ' + ${post.timestamp}"></footer>
                 </div>
             </div>
         </div>
