@@ -14,6 +14,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -51,13 +52,11 @@ public class IndexController {
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public String displaySignupForm(Model model){
         model.addAttribute("user", new UserInfo());
-        String confirmPassword = "";
-        model.addAttribute("confirmPassword", confirmPassword);
         return "signup";
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String processSignupForm(@ModelAttribute("user") @Valid UserInfo newUser, @ModelAttribute("confirmPassword") String confirmPassword,BindingResult bindingResult, Model model){
+    public String processSignupForm(@ModelAttribute("user") @Valid UserInfo newUser, @RequestParam(name = "confirmPassword") String confirmPassword, BindingResult bindingResult, Model model){
 
         if(userDAO.userExists(newUser.getUsername())){
             bindingResult.addError(new FieldError("user","username", "Username is in use"));
