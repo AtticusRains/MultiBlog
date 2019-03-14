@@ -1,6 +1,7 @@
 package com.atticusrains.multiblog.data;
 
 import com.atticusrains.multiblog.models.Blog;
+import com.atticusrains.multiblog.models.Comment;
 import com.atticusrains.multiblog.models.Post;
 import com.atticusrains.multiblog.models.UserInfo;
 import org.springframework.stereotype.Repository;
@@ -36,6 +37,11 @@ public class PostDAOImpl implements  PostDAO {
     @Override
     public Post findByTitle(String title, int blogId) {
         return (Post)entityManager.createQuery("SELECT post FROM Post as post left join post.blog as blog WHERE post.urlFriendlyTitle=? and blog.id=?").setParameter(2, blogId).setParameter(1, title).getSingleResult();
+    }
+
+    @Override
+    public Post findById(int postId, int blogId){
+        return (Post)entityManager.createQuery("SELECT post FROM Post AS p LEFT JOIN p.blog AS b WHERE p.id=? and b.id=?").setParameter(1, postId).setParameter(2, blogId).getSingleResult();
     }
 
     @Override

@@ -1,13 +1,19 @@
 package com.atticusrains.multiblog.models;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 public class Comment {
+
+    public Comment(){
+        this.timestamp = new Timestamp(System.currentTimeMillis());
+    }
+
     @Id
     @GeneratedValue
     private int id;
-    private String timestamp;
+    private Timestamp timestamp;
     private String body;
 
     @ManyToOne
@@ -21,11 +27,11 @@ public class Comment {
         this.id = id;
     }
 
-    public String getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
 

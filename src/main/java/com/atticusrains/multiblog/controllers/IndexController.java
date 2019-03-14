@@ -5,6 +5,7 @@ import com.atticusrains.multiblog.data.PostDAO;
 import com.atticusrains.multiblog.data.UserDAO;
 import com.atticusrains.multiblog.models.Post;
 import com.atticusrains.multiblog.models.UserInfo;
+import org.apache.tomcat.util.digester.ArrayStack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -56,7 +57,7 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String processSignupForm(@ModelAttribute("user") @Valid UserInfo newUser, @RequestParam(name = "confirmPassword") String confirmPassword, BindingResult bindingResult, Model model){
+    public String processSignupForm(@ModelAttribute("user") @Valid UserInfo newUser, @RequestParam("confirmPassword") String confirmPassword, BindingResult bindingResult, Model model){
 
         if(userDAO.userExists(newUser.getUsername())){
             bindingResult.addError(new FieldError("user","username", "Username is in use"));
@@ -93,6 +94,7 @@ public class IndexController {
             post.setBodyExcerpt(post.getBody().substring(0,250).concat("..."));
         } else { post.setBodyExcerpt(post.getBody());}
         post.setUrlFriendlyTitle(post.cleanString(post.getTitle()));
+        post.setComments(new ArrayList<>());
         postDAO.save(post);
         return "redirect:/b/" + user.getUsername() + "/" + post.getUrlFriendlyTitle();
     }

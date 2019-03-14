@@ -11,6 +11,7 @@ public interface PostDAO {
     List<Post> findAllByUser(UserInfo user);
     List<Post> findAllByBlog(Blog blog);
     Post findByTitle(String title, int blogId);
+    Post findById(int postId, int blogId);
     boolean postExists(String title, int blogId);
     void save(Post newPost);
 }
