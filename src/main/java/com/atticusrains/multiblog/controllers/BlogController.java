@@ -3,18 +3,18 @@ package com.atticusrains.multiblog.controllers;
 import com.atticusrains.multiblog.data.BlogDAO;
 import com.atticusrains.multiblog.data.CommentDAO;
 import com.atticusrains.multiblog.data.PostDAO;
+import com.atticusrains.multiblog.data.UserDAO;
 import com.atticusrains.multiblog.models.Blog;
 import com.atticusrains.multiblog.models.Comment;
 import com.atticusrains.multiblog.models.Post;
+import com.atticusrains.multiblog.models.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,6 +28,8 @@ public class BlogController {
     private PostDAO postDAO;
     @Autowired
     private CommentDAO commentDAO;
+    @Autowired
+    private UserDAO userDAO;
 
     @RequestMapping(value = "/{blogTitle}")
     public String displayBlog(@PathVariable String blogTitle, Model model){
@@ -52,10 +54,17 @@ public class BlogController {
         return "404";
     }
 
-    @RequestMapping(value = "/{blogTitle}/{postTitle}/comment")
-    public String processCommentForm(@ModelAttribute("comment")Comment comment, @PathVariable(value = "blogTitle") String blogTitle, @PathVariable(value = "postTitle") String postTitle, Model model){
+    @RequestMapping(value = "/{blogTitle}/{postTitle}/comment", method = RequestMethod.POST)
+    public String processCommentForm(@ModelAttribute(name = "newComment")Comment comment, @PathVariable(value = "blogTitle") String blogTitle,
+                                     @PathVariable(value = "postTitle") String postTitle, Model model, Authentication authentication){
+        if(authentication == null){
+            return "redirecct:/login";
+        }
+        UserInfo user = userDAO.getActiveUser(authentication.getName());
+        comment.setUser(user);
+
         commentDAO.save(comment, postDAO.findByTitle(postTitle, blogDAO.getByTitle(blogTitle).getId()));
-        return "postview";
+        return "redirect:/b/" + blogTitle + "/" + postTitle;
     }
 
 

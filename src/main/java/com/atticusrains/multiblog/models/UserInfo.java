@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -39,6 +40,10 @@ public class UserInfo implements Serializable {
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "user_id")
     private Blog blog;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<Comment> comments;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

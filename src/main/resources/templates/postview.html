@@ -15,25 +15,20 @@
                </header>
                 <p th:text="${post.body}"></p>
             </div>
-            <div class="card" th:action="@{/${post.blog.title}/${post.title}/comment}">
-                <h5 class="card-header">Leave a Comment:</h5>
-                <div class="card-body">
-                    <form>
-                        <div class="form-group" th:object="${newComment}">
-                            <textarea class="form-control" rows="3" th:field="*{body}"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
+            <form class="form-group" th:action="@{'/b/' + ${post.blog.title} + '/' + ${post.urlFriendlyTitle} + '/comment'}" method="post">
+                <div class="form-group" th:object="${newComment}">
+                    <textarea class="form-control" rows="3" th:field="*{body}"></textarea>
                 </div>
-            </div>
-
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <div th:each="comment : ${comments}">
             <div class="media mb-4">
                 <div class="media-body">
-                    <h5 class="mt-0">Commenter Name</h5>
-                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                    <h5 th:text="${comment.user.username}">Commenter Name</h5>
+                    <p th:text="${comment.body}"></p>
                 </div>
             </div>
-
+            </div>
         </div>
     </div>
 </body>
