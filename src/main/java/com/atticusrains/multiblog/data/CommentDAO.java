@@ -8,5 +8,7 @@ import java.util.List;
 public interface CommentDAO {
     List<Comment> findAll();
     List<Comment> findByPost(Post post);
+    List<Comment> findByParentComment(Comment parentComment);
     void save(Comment comment, Post post);
+    void saveSubcomment(Comment comment, Comment parentComment);
 }

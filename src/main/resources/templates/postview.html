@@ -22,11 +22,18 @@
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
             <div th:each="comment : ${comments}">
-            <div class="media mb-4">
-                <div class="media-body">
+                <div>
                     <h5 th:text="${comment.user.username}">Commenter Name</h5>
                     <p th:text="${comment.body}"></p>
                 </div>
+                <div th:if="${comment.isParent}">
+                    <div th:each="subComment : ${comment.subComments}">
+                        <div>
+                            <h5 th:text="${subComment.user.username}">Commenter Name</h5>
+                            <p th:text="${subComment.body}"></p>
+                        </div>
+                </div>
+                <hr/>
             </div>
             </div>
         </div>

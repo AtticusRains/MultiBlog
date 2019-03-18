@@ -32,8 +32,20 @@ public class CommentDAOImpl implements CommentDAO {
     }
 
     @Override
+    public List<Comment> findByParentComment(Comment parentComment){
+        return entityManager.createQuery("SELECT c FROM Comment as c WHERE c.parentComment=?").setParameter(1, parentComment).getResultList();
+    }
+
+    @Override
     public void save(Comment comment, Post post) {
         comment.setPost(post);
+        entityManager.persist(comment);
+    }
+
+    @Override
+    public void saveSubcomment(Comment comment, Comment parentComment){
+        parentComment.setIsParent(true);
+        comment.setParentComment(parentComment);
         entityManager.persist(comment);
     }
 }
