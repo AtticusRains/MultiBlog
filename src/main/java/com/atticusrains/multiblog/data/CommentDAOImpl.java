@@ -39,6 +39,7 @@ public class CommentDAOImpl implements CommentDAO {
     @Override
     public void save(Comment comment, Post post) {
         comment.setPost(post);
+        post.setNumbComments(post.getNumbComments()+1);
         entityManager.persist(comment);
     }
 

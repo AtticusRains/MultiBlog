@@ -1,8 +1,10 @@
 package com.atticusrains.multiblog.models;
 
 import org.apache.tomcat.jni.Time;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,6 +16,7 @@ public class Post {
 
     public Post() {
         this.timestamp = new Timestamp(System.currentTimeMillis());
+        this.numbComments = 0;
     }
 
     public Post(String title, Blog blog){
@@ -21,6 +24,7 @@ public class Post {
         this.blog = blog;
         this.urlFriendlyTitle = cleanString(title);
         this.timestamp = new Timestamp(System.currentTimeMillis());
+        this.numbComments = 0;
     }
 
     public Post(String title, Blog blog, String body){
@@ -28,6 +32,7 @@ public class Post {
         this.blog = blog;
         this.urlFriendlyTitle = cleanString(title);
         this.timestamp = new Timestamp(System.currentTimeMillis());
+        this.numbComments = 0;
         this.body = body;
         if(body.length() > 250) {
             this.bodyExcerpt = body.substring(250);
@@ -50,15 +55,26 @@ public class Post {
 
     private String urlFriendlyTitle;
 
+    @Column(length = 100000)
     private String body;
 
     private String bodyExcerpt;
 
     private Timestamp timestamp;
 
+    int numbComments;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id")
     private List<Comment> comments = new ArrayList<>();
+
+    public int getNumbComments() {
+        return numbComments;
+    }
+
+    public void setNumbComments(int numbComments) {
+        this.numbComments = numbComments;
+    }
 
     public int getId() {
         return id;
