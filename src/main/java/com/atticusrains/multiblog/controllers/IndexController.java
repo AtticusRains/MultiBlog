@@ -6,6 +6,7 @@ import com.atticusrains.multiblog.data.UserDAO;
 import com.atticusrains.multiblog.models.Post;
 import com.atticusrains.multiblog.models.UserInfo;
 import org.apache.tomcat.util.digester.ArrayStack;
+import org.markdownj.MarkdownProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -90,6 +91,7 @@ public class IndexController {
         UserInfo user = userDAO.getActiveUser(authentication.getName());
         post.setUserId(user.getId());
         post.setBlog(user.getBlog());
+        post.setBody(processMarkdown(post.getBody()));
         if(post.getBody().length() > 255){
             post.setBodyExcerpt(post.getBody().substring(0,250).concat("..."));
         } else { post.setBodyExcerpt(post.getBody());}
@@ -108,4 +110,10 @@ public class IndexController {
     public String Error404(){
         return "404";
     }
+
+    private String processMarkdown(String txt){
+        MarkdownProcessor markdownProcessor = new MarkdownProcessor();
+        return markdownProcessor.markdown(txt);
+    }
+
 }

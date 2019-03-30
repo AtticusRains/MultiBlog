@@ -4,6 +4,8 @@
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
     <title></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 </head>
 <body>
     <div class="container" th:object="${post}">
@@ -13,18 +15,18 @@
                    <h1 class="title" th:text="${post.title}"></h1>
                    <p class="blockquote-footer" th:text="${post.blog.title} + ' at ' + ${post.timestamp}"></p>
                </header>
-                <p th:text="${post.body}"></p>
+                <p th:utext="${post.body}"></p>
             </div>
             <form class="form-group" th:action="@{'/b/' + ${post.blog.title} + '/' + ${post.urlFriendlyTitle} + '/comment'}" method="post">
                 <div class="form-group" th:object="${newComment}">
-                    <textarea class="form-control" rows="3" th:field="*{body}"></textarea>
+                    <textarea id="commentBody" class="form-control" rows="3" th:field="*{body}"></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
             <div th:each="comment : ${comments}">
                 <div>
                     <h5 th:text="${comment.user.username}">Commenter Name</h5>
-                    <p th:text="${comment.body}"></p>
+                    <p th:utext="${comment.body}"></p>
                 </div>
                 <div th:if="${comment.isParent}">
                     <div th:each="subComment : ${comment.subComments}">
@@ -38,5 +40,6 @@
             </div>
         </div>
     </div>
+    <script>var simplemde = new SimpleMDE({ element: document.getElementById("commentBody") });</script>
 </body>
 </html>

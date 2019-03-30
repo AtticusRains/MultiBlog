@@ -15,6 +15,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.markdownj.*;
+
 
 import java.util.List;
 
@@ -62,11 +64,15 @@ public class BlogController {
         }
         UserInfo user = userDAO.getActiveUser(authentication.getName());
         comment.setUser(user);
-
+        comment.setBody(processMarkdown(comment.getBody()));
         commentDAO.save(comment, postDAO.findByTitle(postTitle, blogDAO.getByTitle(blogTitle).getId()));
         return "redirect:/b/" + blogTitle + "/" + postTitle;
     }
 
 
+    private String processMarkdown(String txt){
+        MarkdownProcessor markdownProcessor = new MarkdownProcessor();
+        return markdownProcessor.markdown(txt);
+    }
 
 }

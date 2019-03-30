@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 </head>
 <body>
     <nav>
@@ -24,10 +26,10 @@
         </div>
         <div class="form-group">
             <label th:for="body">Body:</label>
-            <textarea th:field="*{body}" class="form-control" rows="3"></textarea>
+            <textarea id="postBody" th:field="*{body}" class="form-control" rows="3"></textarea>
         </div>
         <input type="submit" class="btn btn-primary btn-block" value="submit"/>
     </form>
-
+    <script>var simplemde = new SimpleMDE({ element: document.getElementById("postBody") });</script>
 </body>
 </html>
