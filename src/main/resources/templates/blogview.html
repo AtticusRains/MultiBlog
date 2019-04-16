@@ -1,31 +1,28 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org/">
-<head>
-    <title>MultiBlog Home</title>
-    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<head th:replace="fragments :: head"></head>
+<body style="background-color:grey;">
+<nav th:replace="fragments :: navigation"></nav>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
-</head>
-    <body>
-        <nav>
-            <ul>
-                <li><a href="/login">Login</a></li>
-                <li><a href="/signup">Sign up</a></li>
-                <li><a href="/index">Home</a></li>
-                <li><a href="/newpost">New Post</a></li>
-            </ul>
-        </nav>
-
-        <p th:unless="${posts} and ${posts.size()}">no posts :(</p>
-        <div th:each="post : ${posts}">
-            <div class="card">
-                <div class="card-body">
-                    <a th:href="@{'/b/' + ${post.blog.title} + '/' + ${post.urlFriendlyTitle}}"><h5 class="card-title" th:text="${post.title}"></h5></a>
-                    <p class="card-text" th:utext="${post.bodyExcerpt}"></p>
-                    <footer class="blockquote-footer" th:text="${post.blog.title} + ' at ' + ${post.timestamp}"></footer>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 mt-md-2 mb-md-2 py-4 rounded-lg" style="background-color:#fff;">
+            <h2 th:text="'Recent Posts From ' + ${blogTitle}"></h2>
+            <p th:unless="${posts} and ${posts.size()}">no posts :(</p>
+            <div th:each="post : ${posts}">
+                <div class="card m-1">
+                    <div class="card-body">
+                        <a th:href="@{'/b/' + ${post.blog.title} + '/' + ${post.urlFriendlyTitle}}"><h5 class="card-title" th:text="${post.title}"></h5></a>
+                        <p class="card-text" th:utext="${post.bodyExcerpt}"></p>
+                        <footer class="blockquote-footer" th:text="${post.blog.title} + ' - ' + ${post.timestamp} + ' - ' + ${post.numbComments} + ' Comments'"></footer>
+                    </div>
                 </div>
             </div>
         </div>
-    </body>
+    </div>
+</div><!--Holy divs Batman! -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
 </html>

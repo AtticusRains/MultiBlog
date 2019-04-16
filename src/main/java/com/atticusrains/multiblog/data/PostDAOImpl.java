@@ -21,7 +21,7 @@ public class PostDAOImpl implements  PostDAO {
 
     @Override
     public List<Post> findAll() {
-        return entityManager.createQuery("FROM Post").getResultList();
+        return entityManager.createQuery("FROM Post as p order by p.timestamp desc").getResultList();
     }
 
     @Override

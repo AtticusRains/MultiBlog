@@ -1,45 +1,50 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org/">
-<head>
-    <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
-    <title></title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"/>
-    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
-</head>
-<body>
-    <div class="container" th:object="${post}">
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-               <header>
-                   <h1 class="title" th:text="${post.title}"></h1>
-                   <p class="blockquote-footer" th:text="${post.blog.title} + ' at ' + ${post.timestamp}"></p>
-               </header>
-                <p th:utext="${post.body}"></p>
-            </div>
-            <form class="form-group" th:action="@{'/b/' + ${post.blog.title} + '/' + ${post.urlFriendlyTitle} + '/comment'}" method="post">
-                <div class="form-group" th:object="${newComment}">
-                    <textarea id="commentBody" class="form-control" rows="3" th:field="*{body}"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-            <div th:each="comment : ${comments}">
-                <div>
-                    <h5 th:text="${comment.user.username}">Commenter Name</h5>
-                    <p th:utext="${comment.body}"></p>
-                </div>
-                <div th:if="${comment.isParent}">
-                    <div th:each="subComment : ${comment.subComments}">
-                        <div>
-                            <h5 th:text="${subComment.user.username}">Commenter Name</h5>
-                            <p th:text="${subComment.body}"></p>
+<head th:replace="fragments :: head"></head>
+<body style="background-color:grey;">
+<nav th:replace="fragments :: navigation"></nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 mt-md-2 mb-md-2 rounded-lg" style="background-color:#fff;" th:object="${post}">
+            <h1 class="mt-4" th:text="${post.title}"></h1>
+            <p class="lead">By <a th:href="@{'/b/' + ${post.blog.title}}" th:text="${post.blog.title}"></a></p>
+            <hr/>
+            <p th:text="${post.timestamp} + ' - ' + ${post.numbComments} + ' Comments'"></p>
+            <hr/>
+            <div th:utext="${post.body}"></div>
+            <hr/>
+
+            <div class="card my-4">
+                <h5 class="card-header">Leave a Comment</h5>
+                <div class="card-body">
+                    <form th:action="@{'/b/' + ${post.blog.title} + '/' + ${post.urlFriendlyTitle} + '/comment'}" method="post">
+                        <div class="form-group" th:object="${newComment}">
+                            <textarea id="commentBody" class="form-control" rows="3"  th:field="*{body}"></textarea>
                         </div>
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                    </form>
                 </div>
-                <hr/>
             </div>
+
+            <div th:each="comment : ${comments}">
+                <div class="media mb-4">
+                    <div class="media-body">
+                        <h5 class="mt-0" th:text="${comment.user.username}"></h5>
+                        <div th:utext="${comment.body}"></div>
+                    </div>
+                    <div class="media mb-4" th:if="${comment.isParent}" th:each="child : ${comment.subComments}">
+                        <h5 class="mt-0" th:text="${child.user.username}"></h5>
+                        <div th:utext="${child.body}"></div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
-    <script>var simplemde = new SimpleMDE({ element: document.getElementById("commentBody") });</script>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>

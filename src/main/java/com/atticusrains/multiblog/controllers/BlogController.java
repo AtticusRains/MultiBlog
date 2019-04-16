@@ -36,6 +36,7 @@ public class BlogController {
     @RequestMapping(value = "/{blogTitle}")
     public String displayBlog(@PathVariable String blogTitle, Model model){
         if(blogDAO.blogExists(blogTitle)){
+            model.addAttribute("blogTitle", blogTitle);
             model.addAttribute("posts", blogDAO.getByTitle(blogTitle).getPosts());
             return "blogview";
         }
@@ -60,7 +61,7 @@ public class BlogController {
     public String processCommentForm(@ModelAttribute(name = "newComment")Comment comment, @PathVariable(value = "blogTitle") String blogTitle,
                                      @PathVariable(value = "postTitle") String postTitle, Model model, Authentication authentication){
         if(authentication == null){
-            return "redirecct:/login";
+            return "redirect:/login";
         }
         UserInfo user = userDAO.getActiveUser(authentication.getName());
         comment.setUser(user);
