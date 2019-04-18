@@ -1,6 +1,11 @@
 package com.atticusrains.multiblog.models;
 
+import com.atticusrains.multiblog.validation.UsernameConstraint;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Collection;
@@ -15,19 +20,24 @@ public class UserInfo implements Serializable {
     @GeneratedValue
     private int id;
 
+    //@UsernameConstraint
     @Size(min = 3, max = 15)
     @Column(unique = true, name = "username")
     private String username;
 
+    @NotEmpty
     @Column(name="password")
     private String password;
 
+    @NotEmpty(message = "Email cannot be blank")
     @Column(unique = true, name = "email")
     private String email;
 
+    @NotEmpty(message = "Name cannot be blank")
     @Column(name = "first_name")
     private String firstName;
 
+    @NotEmpty(message = "Name cannot be blank")
     @Column(name = "last_name")
     private String lastName;
 

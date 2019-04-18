@@ -61,13 +61,15 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String processSignupForm(@ModelAttribute("user") @Valid UserInfo newUser, @RequestParam("confirmPassword") String confirmPassword, BindingResult bindingResult, Model model){
+    public String processSignupForm(@ModelAttribute("user") @Valid UserInfo newUser, BindingResult bindingResult, @RequestParam("confirmPassword") String confirmPassword, Model model){
+
 
         if(userDAO.userExists(newUser.getUsername())){
             bindingResult.addError(new FieldError("user","username", "Username is in use"));
         } else if (!newUser.getPassword().equals(confirmPassword)){
             bindingResult.addError(new FieldError("user", "password", "Passwords do not match"));
         }
+
         if(bindingResult.hasErrors()){
             return "signup";
         }
